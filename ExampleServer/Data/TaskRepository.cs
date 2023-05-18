@@ -42,6 +42,25 @@ public class TaskRepository
         return tasks;
     }
 
+    // Update method
+    public bool MarkTaskAsComplete(int taskId)
+    {
+        // Returns the first element of the sequence that satisfies
+        // a condition or a default value if no such element is found.
+        TaskModel? task = _taskList.FirstOrDefault(t => t.Id == taskId);
+
+        // Check if the task doesn't exist OR
+        // check if the task is already complete
+        if (task == null || task.IsComplete) 
+        {
+            // Return false to indicate it didn't change anything
+            return false;
+        }
+
+        task.IsComplete = true;
+        return true;
+    }
+
     // Delete method
     public bool DeleteTaskById(int id)
     {
