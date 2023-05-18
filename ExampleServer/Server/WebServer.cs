@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using ExampleServer.Data;
+using ExampleServer.Models;
 
 namespace ExampleServer.Server;
 
@@ -62,6 +63,10 @@ public class WebServer
                     // Handle GET Requests
                     HandleGetRequests(request, response);
                     break;
+                case "POST":
+                    // Handle POST requests
+                    HandlePostRequests(request, response);
+                    break;
             }
         }
     }
@@ -79,7 +84,41 @@ public class WebServer
         }
     }
 
+    private void HandlePostRequests(HttpListenerRequest request, HttpListenerResponse response)
+    {
+        // Check that the request has a body
+        if (request.HasEntityBody)
+        {
+            // Deserialize our request body into the C# request type
+            TaskCreateRequest? body = JsonSerializer.Deserialize<TaskCreateRequest>(request.InputStream);
 
+            // Check to make sure it is not null
+            if (body != null)
+            {
+                // Create the new TaskModel
+                TaskModel newTask = new TaskModel(body.Title ?? "Title", body.Description ?? "");
+
+                // Add that task to our repository
+                _taskRepository.AddTask(newTask);
+
+                // Create a response message
+                string logOutput = $"Added new item: #{newTask.Id}: {newTask.Title}";
+                Console.WriteLine(logOutput);
+
+                // Send the response
+                SendResponse(response, HttpStatusCode.Created, newTask);
+            }
+        }
+        else
+        {
+            // If our POST request does not have a body
+            string errorMessage = "Failed to add task as there was no request body.";
+            Console.WriteLine(errorMessage);
+
+            ErrorResponse error = new ErrorResponse(errorMessage);
+            SendResponse(response, HttpStatusCode.BadRequest, error);
+        }
+    }
 
 
 
