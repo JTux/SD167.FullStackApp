@@ -90,8 +90,8 @@ h2:last-of-type {
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: 1rem;
+    row-gap: 1.25rem;
     margin: 1rem auto 0;
-    padding-left: .5rem;
     width: 100%;
 }
 
@@ -153,6 +153,11 @@ h2:last-of-type {
 @media (width >=576px) {
     .create-form {
         flex-direction: row;
+    }
+
+    #task-container,
+    #completed-tasks-container {
+        padding-left: .5rem;
     }
 
     .task {
