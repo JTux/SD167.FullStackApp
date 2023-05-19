@@ -1,33 +1,176 @@
+:root {
+    --gap: 1rem;
+}
+
+body {
+    margin: 0;
+    background-color: #3a281a;
+    background-image: url("./assets/transparenttextures/tileable-wood-colored.png");
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 1000px;
+    max-width: 90%;
+    margin: auto;
+    padding: 0 .75rem;
+    background-color: #a5844b;
+    background-size: 50%;
+    background-image: url("./assets/transparenttextures/wine-cork.png");
+    box-shadow:
+        8px 0 8px 1px #22180a,
+        -8px 0 8px 1px #22180a;
+}
+
+header {
+    margin: 0 -.75rem;
+    padding: 0 .75rem .5rem;
+    background-color: #1a1a1a;
+    background-image: url("./assets/corkboard-top.jpg");
+    background-size: cover;
+    border-bottom: solid 2px #141414;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+    margin: 0;
+    padding: .8em 0;
+}
+
+.create-form {
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.create-form>* {
+    border: solid 1px dimgray;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.create-form>input {
+    flex-grow: 1;
+    line-height: 2rem;
+    padding-left: .5rem;
+}
+
+.create-form>input:last-of-type {
+    flex-grow: 4;
+}
+
+.submit-button {
+    color: white;
+    background-color: #e21934;
+}
+
+.submit-button:hover {
+    background-color: #aa1428;
+    cursor: pointer;
+}
+
+h2 {
+    text-align: center;
+    text-decoration: underline;
+    color: #22180a;
+}
+
+h2:last-of-type {
+    margin-top: 3em;
+}
+
 /* Id of task-container */
 #task-container,
 #completed-tasks-container {
-    width: 1000px;
-    max-width: 90vw;
-    margin: 1rem auto 0;
     display: flex;
+    gap: 1rem;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    margin: 1rem auto 0;
+    width: 100%;
+    justify-content: flex-start;
 }
 
 /* Class of task */
 .task {
     box-sizing: border-box;
-    width: calc(33.33333% - .5rem);
+    position: relative;
+    padding: 1.5rem .25rem 0;
     border: solid 1px black;
-    margin-bottom: .5rem;
-    background-color: lightsalmon;
-    padding: .5rem;
+    width: 100%;
+    min-height: 8.5rem;
+    text-align: center;
+    background-color: #ffff5e;
+    background-image: url("./assets/transparenttextures/lined-paper-2 (1).png");
+    background-size: cover;
+    transition: transform .1s;
+}
+
+.task:hover {
+    cursor: pointer;
+    transform: rotate(2deg);
+    box-shadow: 2px 8px 8px 0px #00000086;
+}
+
+.task::before {
+    content: url("./assets/pushpin.png");
+    height: 60px;
+    width: 60px;
+    z-index: 1000;
+    position: absolute;
+    top: -20px;
+    left: calc(50% - 30px);
+}
+
+.task:hover::before {
+    transform: rotate(-5deg);
 }
 
 .task.completed {
     text-decoration: line-through;
-    background-color: lightseagreen;
+    background-color: #b43939;
+    text-decoration-color: #352929;
 }
 
-.task > h3 {
+.task>h3 {
     margin: 0;
 }
 
-.task > p {
+.task>p {
     margin: .25rem 0;
+    padding: .25rem .5rem;
+    max-height: 100%;
+    overflow: auto;
+    text-align: left;
 }
+
+/* Small Screens */
+@media (width >=576px) {
+    .create-form {
+        flex-direction: row;
+    }
+
+    .task {
+        width: calc(50% - var(--gap));
+    }
+}
+
+/* Medium Screens */
+@media (width >=768px) {
+    .task {
+        width: calc(33.333% - var(--gap));
+    }
+}
+
+/* Large Screens */
+@media (width >=992px) {
+    .task {
+        width: calc(25% - var(--gap));
+    }
+}
+
+/* Extra Large Screens */
+@media (width >=1200px) {}

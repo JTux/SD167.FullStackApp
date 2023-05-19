@@ -1,6 +1,10 @@
 // TaskRepository is responsible for storing and manipulating
 // our collection of data, in this case TaskModels
 
+using System.Reflection;
+using System.Text;
+using System.Text.Json;
+
 namespace ExampleServer.Data;
 
 public class TaskRepository
@@ -8,12 +12,29 @@ public class TaskRepository
     // Data storage (All of our Tasks)
     private readonly List<TaskModel> _taskList = new List<TaskModel>();
 
+    public TaskRepository()
+    {
+        CreateJsonFile();
+        TaskModel[] tasks = GetTasksFromFile();
+        _taskList = new List<TaskModel>(tasks);
+    }
+
+    private string FilePath
+    {
+        get
+        {
+            var directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "";
+            return Path.Combine(directory, "tasks.json");
+        }
+    }
+
     // Create method
     // Not creating an instance, we're creating an entry in the list
     public void AddTask(TaskModel task)
     {
         _taskList.Add(task);
         // _taskList.Contains(task);
+        SaveTasksToFile();
     }
 
     // Read method
@@ -51,13 +72,16 @@ public class TaskRepository
 
         // Check if the task doesn't exist OR
         // check if the task is already complete
-        if (task == null || task.IsComplete) 
+        if (task == null || task.IsComplete)
         {
             // Return false to indicate it didn't change anything
             return false;
         }
 
         task.IsComplete = true;
+
+        SaveTasksToFile();
+
         return true;
     }
 
@@ -71,11 +95,36 @@ public class TaskRepository
             if (task.Id == id)
             {
                 // If we find it remove the task and return true/false
-                return _taskList.Remove(task);
+                bool deleteResult = _taskList.Remove(task);
+                SaveTasksToFile();
+                return deleteResult;
             }
         }
 
         // Return false if we don't find the Id in the loop
         return false;
+    }
+
+    private TaskModel[] GetTasksFromFile()
+    {
+        var x = File.ReadAllText(FilePath);
+        var y = JsonSerializer.Deserialize<TaskModel[]>(x);
+        return y ?? new TaskModel[0];
+    }
+
+    private void SaveTasksToFile()
+    {
+        var y = JsonSerializer.Serialize(_taskList);
+        File.WriteAllText(FilePath, y);
+    }
+
+    private void CreateJsonFile()
+    {
+        if (File.Exists(FilePath) != true)
+        {
+            StreamWriter sw = new StreamWriter(FilePath, true, Encoding.ASCII);
+            sw.Write("[]");
+            sw.Close();
+        }
     }
 }

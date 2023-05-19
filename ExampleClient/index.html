@@ -9,21 +9,20 @@
     <link rel="stylesheet" href="./styles.css" />
 </head>
 <body onload="getData()">
-    <h1>My Task List</h1>
-
-    <div>
-        <form onsubmit="handleSubmit(event)">
-            <input type="text" name="title" placeholder="Enter title..." required />
-            <input type="text" name="description" placeholder="Enter description..." />
-            <button type="submit">Add New Task</button>
-        </form>
+    <div class="wrapper">
+        <header>
+            <h1>My Task List</h1>
+            <form onsubmit="handleSubmit(event)" class="create-form">
+                <input type="text" name="title" placeholder="Enter title..." required />
+                <input type="text" name="description" placeholder="Enter description..." />
+                <button type="submit" class="submit-button">Add New Task</button>
+            </form>
+        </header>
+        <h2>Incomplete Tasks</h2>
+        <div id="task-container"></div>
+        <h2>Completed Tasks</h2>
+        <div id="completed-tasks-container"></div>
     </div>
-
-    <h2>Incomplete Tasks</h2>
-    <div id="task-container"></div>
-
-    <h2>Completed Tasks</h2>
-    <div id="completed-tasks-container"></div>
 
     <script src="./script.js"></script>
 </body>
