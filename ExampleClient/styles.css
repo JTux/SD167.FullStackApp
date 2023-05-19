@@ -87,11 +87,12 @@ h2:last-of-type {
 #task-container,
 #completed-tasks-container {
     display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin: 1rem auto 0;
-    width: 100%;
     justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem auto 0;
+    padding-left: .5rem;
+    width: 100%;
 }
 
 /* Class of task */
@@ -107,6 +108,7 @@ h2:last-of-type {
     background-image: url("./assets/transparenttextures/lined-paper-2 (1).png");
     background-size: cover;
     transition: transform .1s;
+    border-radius: 3px;
 }
 
 .task:hover {
